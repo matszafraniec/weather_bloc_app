@@ -23,15 +23,23 @@ dependencies:
   equatable: ^2.0.5
   get_it: ^7.6.7
   injectable: ^2.3.2
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
 
   # Utilities
   bloc_test: ^9.1.6
+  dartz: ^0.10.1
+  dio: ^5.4.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Code rules
   flutter_lints: ^2.0.0
+
+  # Data
+  build_runner: ^2.4.6
 
 # The following section is specific to Flutter packages.
 flutter:

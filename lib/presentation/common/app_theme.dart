@@ -43,4 +43,8 @@ class AppTheme {
 
   static const Color colorLightBackground = Colors.white;
   static const Color colorDarkBackground = Colors.white;
+
+  static const defaultInputBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(16)),
+  );
 }
