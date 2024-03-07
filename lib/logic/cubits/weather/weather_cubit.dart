@@ -29,28 +29,28 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
 
   Future<void> onLocationSelected(LocationAutocomplete location) async {
-    emit(const WeatherDataLoading());
+    emit(const WeatherCityDataLoading());
 
     final currentConditionsResponse =
         await _weatherRepo.fetchCurrentConditions(location.key);
 
     currentConditionsResponse.fold(
       (error) {
-        emit(WeatherDataError(error));
+        emit(WeatherCityDataError(error));
       },
       (currentConditionsData) async {
-        emit(WeatherDataSuccess(currentConditions: currentConditionsData));
+        emit(WeatherCityDataSuccess(currentConditions: currentConditionsData));
 
         final forecastResponse =
             await _weatherRepo.fetchFiveDaysForecast(location.key);
 
         forecastResponse.fold(
           (error) {
-            emit(WeatherDataError(error));
+            emit(WeatherCityDataError(error));
           },
           (forecastData) {
             emit(
-              WeatherDataSuccess(
+              WeatherCityDataSuccess(
                 currentConditions: currentConditionsData,
                 fiveDaysForecast: forecastData,
               ),
@@ -60,4 +60,6 @@ class WeatherCubit extends Cubit<WeatherState> {
       },
     );
   }
+
+  void onBackButtonPressed() => emit(WeatherInitial());
 }

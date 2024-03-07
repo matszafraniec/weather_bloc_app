@@ -7,8 +7,7 @@ class CitiesListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<WeatherCubit, WeatherState>(
-      listener: _handleSideEffects,
+    return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, state) {
         if (state is WeatherCitySearchSuccess) {
           return const CitiesList();
@@ -17,18 +16,6 @@ class CitiesListBuilder extends StatelessWidget {
         return const SizedBox();
       },
     );
-  }
-
-  void _handleSideEffects(BuildContext context, WeatherState state) {
-    if (state is WeatherCitySearchError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            state.error.message,
-          ),
-        ),
-      );
-    }
   }
 }
 
