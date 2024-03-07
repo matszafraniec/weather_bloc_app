@@ -44,7 +44,9 @@ class _CitySearchBarState extends State<CitySearchBar> {
   }
 
   Widget _buildSuffixIcon(WeatherState state) {
-    if (state is WeatherInitial || state is WeatherCitySearchError) {
+    if (state is WeatherInitial ||
+        state is WeatherCitySearchError ||
+        state is WeatherCitySearchSuccess) {
       if (showProceedButton) {
         return ProceedButton(
           onPressed: _onSearchSubmitted,

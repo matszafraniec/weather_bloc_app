@@ -6,6 +6,11 @@ import 'package:weather_bloc_app/data/common/environment.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/location_autocomplete/domain/location_autocomplete.dart';
 import 'package:weather_bloc_app/data/models/location_autocomplete/remote/location_autocomplete_remote.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
+import 'package:weather_bloc_app/data/models/weather_forecast/domain/weather_forecast.dart';
+import 'package:weather_bloc_app/data/models/weather_forecast/remote/weather_forecast_remote.dart';
+
+import '../models/weather_current_conditions/remote/weather_current_conditions_remote.dart';
 
 abstract class WeatherRepository {
   Future<Either<GeneralError, List<LocationAutocomplete>>>
@@ -13,11 +18,15 @@ abstract class WeatherRepository {
     String phrase,
   );
 
+  Future<Either<GeneralError, WeatherCurrentConditions>> fetchCurrentConditions(
+    String locationKey,
+  );
+
+  Future<Either<GeneralError, List<WeatherForecast>>> fetchFiveDaysForecast(
+    String locationKey,
+  );
+
   // geoposition search when tap on location button
-
-  // current conditions
-
-  // 10 days of daily forecats for given location key when loaded current conditions
 }
 
 class WeatherRepositoryImpl extends WeatherRepository {
@@ -44,6 +53,66 @@ class WeatherRepositoryImpl extends WeatherRepository {
             .toList();
 
         return right(locationAutocompletes);
+      }
+
+      return left(GeneralError('Unexpected Error'));
+    } on DioException catch (exception) {
+      return left(GeneralError(exception.message ?? 'Unexpected Error'));
+    }
+  }
+
+  @override
+  Future<Either<GeneralError, WeatherCurrentConditions>> fetchCurrentConditions(
+    String locationKey,
+  ) async {
+    try {
+      final response = await dio.get(
+        'http://dataservice.accuweather.com/currentconditions/v1/$locationKey',
+        queryParameters: {
+          'apikey': Environment.weatherApiKey,
+          'details': true,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final json = response.data as Map<String, dynamic>;
+
+        return right(
+          WeatherCurrentConditions.fromRemote(
+            WeatherCurrentConditionsRemote.fromJson(json),
+          ),
+        );
+      }
+
+      return left(GeneralError('Unexpected Error'));
+    } on DioException catch (exception) {
+      return left(GeneralError(exception.message ?? 'Unexpected Error'));
+    }
+  }
+
+  @override
+  Future<Either<GeneralError, List<WeatherForecast>>> fetchFiveDaysForecast(
+    String locationKey,
+  ) async {
+    try {
+      final response = await dio.get(
+        'http://dataservice.accuweather.com/forecasts/v1/daily/5day/$locationKey',
+        queryParameters: {
+          'apikey': Environment.weatherApiKey,
+          'details': true,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final weatherForecastWrapper = response.data as Map<String, dynamic>;
+
+        final fiveDaysForecast =
+            (weatherForecastWrapper['DailyForecasts'] as List)
+                .map((json) => WeatherForecastRemote.fromJson(json))
+                .map((remote) => WeatherForecast.fromRemote(remote))
+                .toList();
+
+        return right(fiveDaysForecast);
       }
 
       return left(GeneralError('Unexpected Error'));

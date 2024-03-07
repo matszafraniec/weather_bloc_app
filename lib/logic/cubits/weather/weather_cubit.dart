@@ -25,4 +25,10 @@ class WeatherCubit extends Cubit<WeatherState> {
       },
     );
   }
+
+  Future<void> onLocationSelected(LocationAutocomplete location) async {
+    emit(const WeatherDataLoading());
+
+    _weatherRepo.fetchCurrentConditions(location.key);
+  }
 }

@@ -51,6 +51,8 @@ class CitiesList extends StatelessWidget {
                 title: Text(item.name),
                 subtitle: Text(item.area),
                 trailing: Text(item.country),
+                onTap: () async =>
+                    await context.read<WeatherCubit>().onLocationSelected(item),
               );
             },
           );

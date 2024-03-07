@@ -26,3 +26,17 @@ final class WeatherCitySearchError extends WeatherState {
 
   const WeatherCitySearchError(this.error);
 }
+
+final class WeatherDataLoading extends WeatherState {
+  const WeatherDataLoading();
+}
+
+final class WeatherDataError extends WeatherState {
+  final GeneralError error;
+
+  const WeatherDataError(this.error);
+}
+
+final class WeatherDataSuccess extends WeatherState {
+  const WeatherDataSuccess();
+}
