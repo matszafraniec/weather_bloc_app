@@ -10,8 +10,7 @@ WeatherForecastRemote _$WeatherForecastRemoteFromJson(
         Map<String, dynamic> json) =>
     WeatherForecastRemote(
       icon: json['Icon'] as int,
-      wind: ForecastWindSpeedRemote.fromJson(
-          json['Wind'] as Map<String, dynamic>),
+      wind: ForecastWindRemote.fromJson(json['Wind'] as Map<String, dynamic>),
       temperature: ForecastTemperatureRemote.fromJson(
           json['WetBulbTemperature'] as Map<String, dynamic>),
     );

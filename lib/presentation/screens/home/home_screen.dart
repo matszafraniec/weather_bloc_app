@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'This is home',
+              'This is home page',
             ),
             SizedBox(height: 40),
             CitySearchBar(),

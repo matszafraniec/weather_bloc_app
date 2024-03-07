@@ -15,6 +15,6 @@ class WeatherForecast {
       WeatherForecast(
         icon: remote.icon,
         temperature: remote.temperature.average.value,
-        windSpeed: remote.wind.value,
+        windSpeed: remote.wind.speed.value,
       );
 }

@@ -2,6 +2,8 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:weather_bloc_app/data/common/environment.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/location_autocomplete/domain/location_autocomplete.dart';
@@ -30,7 +32,23 @@ abstract class WeatherRepository {
 }
 
 class WeatherRepositoryImpl extends WeatherRepository {
-  Dio dio = Dio();
+  final dio = Dio();
+
+  WeatherRepositoryImpl() {
+    if (kDebugMode) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: false,
+          error: true,
+          compact: true,
+          maxWidth: 90,
+        ),
+      );
+    }
+  }
 
   @override
   Future<Either<GeneralError, List<LocationAutocomplete>>>
@@ -75,7 +93,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
       );
 
       if (response.statusCode == 200) {
-        final json = response.data as Map<String, dynamic>;
+        final json = (response.data as List).first;
 
         return right(
           WeatherCurrentConditions.fromRemote(
@@ -104,11 +122,11 @@ class WeatherRepositoryImpl extends WeatherRepository {
       );
 
       if (response.statusCode == 200) {
-        final weatherForecastWrapper = response.data as Map<String, dynamic>;
+        final weatherForecastObject = response.data as Map<String, dynamic>;
 
         final fiveDaysForecast =
-            (weatherForecastWrapper['DailyForecasts'] as List)
-                .map((json) => WeatherForecastRemote.fromJson(json))
+            (weatherForecastObject['DailyForecasts'] as List)
+                .map((json) => WeatherForecastRemote.fromJson(json['Day']))
                 .map((remote) => WeatherForecast.fromRemote(remote))
                 .toList();
 

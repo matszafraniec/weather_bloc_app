@@ -16,7 +16,7 @@ WeatherCurrentConditionsRemote _$WeatherCurrentConditionsRemoteFromJson(
       realFeelTemperature: TemperatureRemote.fromJson(
           json['RealFeelTemperature'] as Map<String, dynamic>),
       wind: WindRemote.fromJson(json['Wind'] as Map<String, dynamic>),
-      uvIndexText: json['UvIndexText'] as String,
+      uvIndexText: json['UVIndexText'] as String,
     );
 
 Map<String, dynamic> _$WeatherCurrentConditionsRemoteToJson(
@@ -27,5 +27,5 @@ Map<String, dynamic> _$WeatherCurrentConditionsRemoteToJson(
       'Temperature': instance.temperature.toJson(),
       'RealFeelTemperature': instance.realFeelTemperature.toJson(),
       'Wind': instance.wind.toJson(),
-      'UvIndexText': instance.uvIndexText,
+      'UVIndexText': instance.uvIndexText,
     };

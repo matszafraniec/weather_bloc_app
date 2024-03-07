@@ -38,5 +38,11 @@ final class WeatherDataError extends WeatherState {
 }
 
 final class WeatherDataSuccess extends WeatherState {
-  const WeatherDataSuccess();
+  final WeatherCurrentConditions currentConditions;
+  final List<WeatherForecast>? fiveDaysForecast;
+
+  const WeatherDataSuccess({
+    required this.currentConditions,
+    this.fiveDaysForecast,
+  });
 }

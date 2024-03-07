@@ -10,7 +10,7 @@ class WeatherForecastRemote {
   @JsonKey(name: 'Icon')
   final int icon;
   @JsonKey(name: 'Wind')
-  final ForecastWindSpeedRemote wind;
+  final ForecastWindRemote wind;
   @JsonKey(name: 'WetBulbTemperature')
   final ForecastTemperatureRemote temperature;
 

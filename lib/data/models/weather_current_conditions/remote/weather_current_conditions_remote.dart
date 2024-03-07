@@ -17,7 +17,7 @@ class WeatherCurrentConditionsRemote {
   final TemperatureRemote realFeelTemperature;
   @JsonKey(name: 'Wind')
   final WindRemote wind;
-  @JsonKey(name: 'UvIndexText')
+  @JsonKey(name: 'UVIndexText')
   final String uvIndexText;
 
   WeatherCurrentConditionsRemote({
