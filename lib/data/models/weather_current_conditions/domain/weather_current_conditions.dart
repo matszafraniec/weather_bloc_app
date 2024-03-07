@@ -1,3 +1,4 @@
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/remote/weather_current_conditions_remote.dart';
 
 class WeatherCurrentConditions {
@@ -6,6 +7,7 @@ class WeatherCurrentConditions {
   final double realFeelTemperature;
   final double windSpeed;
   final String uvIndexTest;
+  late LocationInfo locationInfo;
 
   WeatherCurrentConditions({
     required this.icon,

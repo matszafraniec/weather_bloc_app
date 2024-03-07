@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/location_autocomplete/domain/location_autocomplete.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
 import 'package:weather_bloc_app/data/models/weather_forecast/domain/weather_forecast.dart';
 import 'package:weather_bloc_app/data/repositories/weather_repository.dart';
@@ -39,7 +40,18 @@ class WeatherCubit extends Cubit<WeatherState> {
         emit(WeatherCityDataError(error));
       },
       (currentConditionsData) async {
-        emit(WeatherCityDataSuccess(currentConditions: currentConditionsData));
+        final currentConditionsObject = currentConditionsData
+          ..locationInfo = LocationInfo(
+            city: location.name,
+            area: location.area,
+            country: location.country,
+          );
+
+        emit(
+          WeatherCityDataSuccess(
+            currentConditions: currentConditionsObject,
+          ),
+        );
 
         final forecastResponse =
             await _weatherRepo.fetchFiveDaysForecast(location.key);
@@ -51,7 +63,7 @@ class WeatherCubit extends Cubit<WeatherState> {
           (forecastData) {
             emit(
               WeatherCityDataSuccess(
-                currentConditions: currentConditionsData,
+                currentConditions: currentConditionsObject,
                 fiveDaysForecast: forecastData,
               ),
             );

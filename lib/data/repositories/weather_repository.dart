@@ -118,6 +118,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
         queryParameters: {
           'apikey': Environment.weatherApiKey,
           'details': true,
+          'metric': true,
         },
       );
 
