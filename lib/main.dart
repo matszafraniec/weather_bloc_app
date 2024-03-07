@@ -37,6 +37,7 @@ class App extends StatelessWidget {
           useMaterial3: true,
         ),
         routerConfig: navigator.router,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

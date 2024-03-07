@@ -11,35 +11,28 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('Weather'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BlocBuilder<WeatherCubit, WeatherState>(
-              builder: (context, state) => _buildBackButton(state),
-            ),
-            const Text(
-              'This is home page',
-            ),
-            const SizedBox(height: 40),
-            BlocConsumer<WeatherCubit, WeatherState>(
-              listener: _handleSideEffects,
-              builder: (context, state) {
-                if (state is WeatherInitial || state is WeatherCitySearch) {
-                  return const CitySearchLayout();
-                } else if (state is WeatherCityData) {
-                  return const CityForecastLayout();
-                } else {
-                  return const SizedBox();
-                }
-              },
-            ),
-            const SizedBox(height: 40),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BlocBuilder<WeatherCubit, WeatherState>(
+                builder: (context, state) => _buildBackButton(state),
+              ),
+              BlocConsumer<WeatherCubit, WeatherState>(
+                listener: _handleSideEffects,
+                builder: (context, state) {
+                  if (state is WeatherInitial || state is WeatherCitySearch) {
+                    return const CitySearchLayout();
+                  } else if (state is WeatherCityData) {
+                    return const CityForecastLayout();
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

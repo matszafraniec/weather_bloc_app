@@ -88,22 +88,30 @@ class WeatherForecastList extends StatelessWidget {
       child: Material(
         child: SizedBox(
           height: 100,
-          child: BlocBuilder<WeatherCubit, WeatherState>(
-            builder: (context, state) {
-              final data = (state as WeatherCityDataSuccess).fiveDaysForecast!;
+          child: TweenAnimationBuilder(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 600),
+            builder: (context, opacity, child) => Opacity(
+              opacity: opacity,
+              child: BlocBuilder<WeatherCubit, WeatherState>(
+                builder: (context, state) {
+                  final data =
+                      (state as WeatherCityDataSuccess).fiveDaysForecast!;
 
-              return ListView.separated(
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (_, __) =>
-                    const SizedBox(width: Dimensions.paddingS),
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  final item = data[index];
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (_, __) =>
+                        const SizedBox(width: Dimensions.paddingS),
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final item = data[index];
 
-                  return WeatherForecastItem(item);
+                      return WeatherForecastItem(item);
+                    },
+                  );
                 },
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),
