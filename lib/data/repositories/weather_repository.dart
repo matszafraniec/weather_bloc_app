@@ -32,11 +32,11 @@ abstract class WeatherRepository {
 }
 
 class WeatherRepositoryImpl extends WeatherRepository {
-  final dio = Dio();
+  final _dio = Dio();
 
   WeatherRepositoryImpl() {
     if (kDebugMode) {
-      dio.interceptors.add(
+      _dio.interceptors.add(
         PrettyDioLogger(
           requestHeader: true,
           requestBody: true,
@@ -56,7 +56,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
     String phrase,
   ) async {
     try {
-      final response = await dio.get(
+      final response = await _dio.get(
         'http://dataservice.accuweather.com/locations/v1/cities/autocomplete',
         queryParameters: {
           'apikey': Environment.weatherApiKey,
@@ -85,7 +85,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
     String locationKey,
   ) async {
     try {
-      final response = await dio.get(
+      final response = await _dio.get(
         'http://dataservice.accuweather.com/currentconditions/v1/$locationKey',
         queryParameters: {
           'apikey': Environment.weatherApiKey,
@@ -115,7 +115,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
     String locationKey,
   ) async {
     try {
-      final response = await dio.get(
+      final response = await _dio.get(
         'http://dataservice.accuweather.com/forecasts/v1/daily/5day/$locationKey',
         queryParameters: {
           'apikey': Environment.weatherApiKey,

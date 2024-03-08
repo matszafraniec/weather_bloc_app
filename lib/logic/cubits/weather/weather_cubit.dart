@@ -75,4 +75,6 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
 
   void onBackButtonPressed() => emit(WeatherInitial());
+
+  Future<void> addTestValueToLocalDb() async {}
 }

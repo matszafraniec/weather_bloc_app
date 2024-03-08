@@ -19,7 +19,7 @@ class CurrentWeatherConditions extends StatelessWidget {
     //   regularTemperature: 30,
     //   realFeelTemperature: 33,
     //   windSpeed: 15.5,
-    //   uvIndexTest: 'Moderate',
+    //   uvIndexText: 'Moderate',
     // )..locationInfo = LocationInfo(
     //     key: '1234',
     //     city: 'Warsaw',
@@ -107,7 +107,7 @@ class CurrentWeatherConditions extends StatelessWidget {
                               children: [
                                 Text(
                                     'Real Feel: ${data.realFeelTemperature}°C'),
-                                Text('UVIndex: ${data.uvIndexTest}'),
+                                Text('UVIndex: ${data.uvIndexText}'),
                               ],
                             ),
                           ),

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:weather_bloc_app/data/data_providers/favorites_service/favorites_service.dart';
+import 'package:weather_bloc_app/data/data_providers/history_service/history_service.dart';
 import 'package:weather_bloc_app/data/data_sources/local/local_database_source.dart';
 import 'package:weather_bloc_app/presentation/common/routing/app_navigator.dart';
 
@@ -17,18 +18,19 @@ Future setupServiceLocator() async {
   locator
       .registerLazySingleton<WeatherRepository>(() => WeatherRepositoryImpl());
 
-  await _initializeLocalDbReferencesAndServices();
+  _initializeLocalDbReferencesAndServices();
 }
 
-Future<void> _initializeLocalDbReferencesAndServices() async {
-  final localDatabase =
-      locator.registerSingleton<LocalDatabaseSource>(LocalDatabaseSourceImpl());
-  await localDatabase.setup();
+void _initializeLocalDbReferencesAndServices() {
+  locator
+      .registerSingleton<LocalDatabaseSource>(LocalDatabaseSourceImpl())
+      .setup();
 
   locator.registerLazySingleton<FavoritesService>(
-    () => FavoritesServiceImpl(
-      db: localDatabase.db,
-      collection: localDatabase.favoritesCollection,
-    ),
+    () => FavoritesServiceImpl(locator.get<LocalDatabaseSource>()),
+  );
+
+  locator.registerLazySingleton<HistoryService>(
+    () => HistoryServiceImpl(locator.get<LocalDatabaseSource>()),
   );
 }
