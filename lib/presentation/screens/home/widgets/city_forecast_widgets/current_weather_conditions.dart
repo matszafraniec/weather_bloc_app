@@ -21,6 +21,7 @@ class CurrentWeatherConditions extends StatelessWidget {
     //   windSpeed: 15.5,
     //   uvIndexTest: 'Moderate',
     // )..locationInfo = LocationInfo(
+    //     key: '1234',
     //     city: 'Warsaw',
     //     area: 'Mazowieckie',
     //     country: 'Poland',

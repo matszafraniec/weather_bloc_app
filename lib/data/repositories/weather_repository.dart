@@ -73,9 +73,10 @@ class WeatherRepositoryImpl extends WeatherRepository {
         return right(locationAutocompletes);
       }
 
-      return left(GeneralError('Unexpected Error'));
+      return left(GeneralError.unexpected());
     } on DioException catch (exception) {
-      return left(GeneralError(exception.message ?? 'Unexpected Error'));
+      return left(
+          GeneralError(exception.message ?? GeneralError.unexpected().message));
     }
   }
 
@@ -102,9 +103,10 @@ class WeatherRepositoryImpl extends WeatherRepository {
         );
       }
 
-      return left(GeneralError('Unexpected Error'));
+      return left(GeneralError.unexpected());
     } on DioException catch (exception) {
-      return left(GeneralError(exception.message ?? 'Unexpected Error'));
+      return left(
+          GeneralError(exception.message ?? GeneralError.unexpected().message));
     }
   }
 
@@ -134,9 +136,10 @@ class WeatherRepositoryImpl extends WeatherRepository {
         return right(fiveDaysForecast);
       }
 
-      return left(GeneralError('Unexpected Error'));
+      return left(GeneralError.unexpected());
     } on DioException catch (exception) {
-      return left(GeneralError(exception.message ?? 'Unexpected Error'));
+      return left(
+          GeneralError(exception.message ?? GeneralError.unexpected().message));
     }
   }
 }

@@ -42,6 +42,7 @@ class WeatherCubit extends Cubit<WeatherState> {
       (currentConditionsData) async {
         final currentConditionsObject = currentConditionsData
           ..locationInfo = LocationInfo(
+            key: location.key,
             city: location.name,
             area: location.area,
             country: location.country,
