@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_bloc_app/logic/cubits/weather/weather_cubit.dart';
 import 'package:weather_bloc_app/presentation/common/app_theme.dart';
 import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
+import 'package:weather_bloc_app/presentation/common/dimensions.dart';
 
 class CitySearchBar extends StatefulWidget {
   const CitySearchBar({
@@ -19,26 +20,29 @@ class _CitySearchBarState extends State<CitySearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherCubit, WeatherState>(
-      builder: (context, state) => TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
-          border: AppTheme.defaultInputBorder,
-          enabledBorder: AppTheme.defaultInputBorder.copyWith(
-            borderSide: BorderSide(color: context.themeColors.primary),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingXL),
+      child: BlocBuilder<WeatherCubit, WeatherState>(
+        builder: (context, state) => TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          decoration: InputDecoration(
+            border: AppTheme.defaultInputBorder,
+            enabledBorder: AppTheme.defaultInputBorder.copyWith(
+              borderSide: BorderSide(color: context.themeColors.primary),
+            ),
+            hintText: 'Input city name',
+            suffixIcon: _buildSuffixIcon(state),
           ),
-          hintText: 'Input city name',
-          suffixIcon: _buildSuffixIcon(state),
-        ),
-        onChanged: _onTextChanged,
-        onFieldSubmitted: (_) => _onSearchSubmitted(),
-        validator: (value) {
-          if (value!.length >= 4) {
-            return null;
-          }
+          onChanged: _onTextChanged,
+          onFieldSubmitted: (_) => _onSearchSubmitted(),
+          validator: (value) {
+            if (value!.length >= 4) {
+              return null;
+            }
 
-          return 'Input at least 4 characters';
-        },
+            return 'Input at least 4 characters';
+          },
+        ),
       ),
     );
   }

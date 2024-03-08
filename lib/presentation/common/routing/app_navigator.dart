@@ -2,12 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weather_bloc_app/logic/cubits/weather/weather_cubit.dart';
-import 'package:weather_bloc_app/main.dart';
 import 'package:weather_bloc_app/presentation/common/routing/routes.dart';
 import 'package:weather_bloc_app/presentation/screens/favourites/favourites_screen.dart';
 import 'package:weather_bloc_app/presentation/screens/history/history_screen.dart';
 import 'package:weather_bloc_app/presentation/screens/home/home_screen.dart';
 
+import '../../../service_locator.dart';
 import '../../screens/home/scaffold_with_navbar.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

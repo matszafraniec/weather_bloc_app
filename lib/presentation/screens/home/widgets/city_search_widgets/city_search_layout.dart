@@ -7,11 +7,15 @@ class CitySearchLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        CitySearchBar(),
-        CitiesListBuilder(),
-      ],
+    return const Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            CitySearchBar(),
+            CitiesListBuilder(),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -16,7 +16,10 @@ class CityForecastLayout extends StatelessWidget {
       child: BlocBuilder<WeatherCubit, WeatherState>(
         builder: (context, state) {
           if (state is WeatherCityDataLoading) {
-            return const CircularProgressIndicator();
+            return const Align(
+              alignment: Alignment.topCenter,
+              child: CircularProgressIndicator(),
+            );
           } else if (state is WeatherCityDataSuccess) {
             return const Column(
               children: [

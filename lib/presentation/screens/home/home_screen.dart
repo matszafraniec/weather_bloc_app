@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_bloc_app/presentation/common/ui/empty_app_bar.dart';
 
 import '../../../logic/cubits/weather/weather_cubit.dart';
+import '../../common/dimensions.dart';
 import 'widgets/city_forecast_widgets/city_forecast_layout.dart';
 import 'widgets/city_search_widgets/city_search_layout.dart';
 
@@ -11,29 +13,28 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BlocBuilder<WeatherCubit, WeatherState>(
-                builder: (context, state) => _buildBackButton(state),
-              ),
-              BlocConsumer<WeatherCubit, WeatherState>(
-                listener: _handleSideEffects,
-                builder: (context, state) {
-                  if (state is WeatherInitial || state is WeatherCitySearch) {
-                    return const CitySearchLayout();
-                  } else if (state is WeatherCityData) {
-                    return const CityForecastLayout();
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
-            ],
+      appBar: const EmptyAppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BlocBuilder<WeatherCubit, WeatherState>(
+            builder: (context, state) => _buildBackButton(state),
           ),
-        ),
+          Expanded(
+            child: BlocConsumer<WeatherCubit, WeatherState>(
+              listener: _handleSideEffects,
+              builder: (context, state) {
+                if (state is WeatherInitial || state is WeatherCitySearch) {
+                  return const CitySearchLayout();
+                } else if (state is WeatherCityData) {
+                  return const CityForecastLayout();
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -67,8 +68,11 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BackButton(
-      onPressed: () => context.read<WeatherCubit>().onBackButtonPressed(),
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: Dimensions.paddingS),
+      child: BackButton(
+        onPressed: () => context.read<WeatherCubit>().onBackButtonPressed(),
+      ),
     );
   }
 }
