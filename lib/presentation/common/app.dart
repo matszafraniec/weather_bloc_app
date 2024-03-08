@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_bloc_app/presentation/common/app_theme.dart';
 
 import '../../service_locator.dart';
 import 'routing/app_navigator.dart';
@@ -12,10 +13,8 @@ class App extends StatelessWidget {
       onTap: () => _hideKeyboard(context),
       child: MaterialApp.router(
         title: 'Weather BLoC app',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: lightTheme(),
+        darkTheme: darkTheme(),
         routerConfig: locator.get<AppNavigator>().router,
         debugShowCheckedModeBanner: false,
       ),

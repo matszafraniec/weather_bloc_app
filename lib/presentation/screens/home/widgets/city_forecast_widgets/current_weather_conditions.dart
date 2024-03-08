@@ -113,18 +113,23 @@ class CurrentWeatherConditions extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Align(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        child: IconButton(
-                          padding: const EdgeInsets.all(Dimensions.paddingS),
-                          constraints: const BoxConstraints(),
-                          icon: Icon(
-                            Icons.favorite,
-                            color: context.themeColors.error,
+                      if (!state.isAddedToFavorites)
+                        Align(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: IconButton(
+                            padding: const EdgeInsets.all(Dimensions.paddingS),
+                            constraints: const BoxConstraints(),
+                            icon: Icon(
+                              Icons.favorite,
+                              color: context.themeColors.error,
+                            ),
+                            onPressed: () async {
+                              await context
+                                  .read<WeatherCubit>()
+                                  .onAddToFavorites();
+                            },
                           ),
-                          onPressed: () {},
                         ),
-                      ),
                     ],
                   ),
                 ),

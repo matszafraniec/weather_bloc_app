@@ -48,8 +48,9 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
       await _collectionRef<T>().add(_db, rawData);
 
       return right(null);
-    } catch (ex) {
-      log(ex.toString(), name: Statics.loggerLocalDbName);
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerLocalDbName, stackTrace: stackTrace);
 
       return left(GeneralError.unexpected());
     }
@@ -71,8 +72,9 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
       );
 
       return right(null);
-    } catch (ex) {
-      log(ex.toString(), name: Statics.loggerLocalDbName);
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerLocalDbName, stackTrace: stackTrace);
 
       return left(GeneralError.unexpected());
     }
@@ -89,8 +91,9 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
       final records = await _collectionRef<T>().find(_db);
 
       return right(records.map((e) => e.value).toList());
-    } catch (ex) {
-      log(ex.toString(), name: Statics.loggerLocalDbName);
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerLocalDbName, stackTrace: stackTrace);
 
       return left(GeneralError.unexpected());
     }

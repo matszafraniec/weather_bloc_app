@@ -7,12 +7,20 @@ import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/w
 import 'package:weather_bloc_app/data/models/weather_forecast/domain/weather_forecast.dart';
 import 'package:weather_bloc_app/data/repositories/weather_repository.dart';
 
+import '../../../data/repositories/favorites_repository.dart';
+
 part 'weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherRepository _weatherRepo;
+  final FavoritesRepository _favoritesRepo;
 
-  WeatherCubit(this._weatherRepo) : super(WeatherInitial());
+  WeatherCubit({
+    required WeatherRepository weatherRepo,
+    required FavoritesRepository favoritesRepo,
+  })  : _weatherRepo = weatherRepo,
+        _favoritesRepo = favoritesRepo,
+        super(WeatherInitial());
 
   Future<void> onSearchSubmitted(String searchPhrase) async {
     emit(WeatherCitySearchStart(searchPhrase));
@@ -74,7 +82,25 @@ class WeatherCubit extends Cubit<WeatherState> {
     );
   }
 
-  void onBackButtonPressed() => emit(WeatherInitial());
+  Future<void> onAddToFavorites() async {
+    final currentState = state as WeatherCityDataSuccess;
 
-  Future<void> addTestValueToLocalDb() async {}
+    final response =
+        await _favoritesRepo.add(currentState.currentConditions.locationInfo);
+
+    response.fold(
+      (_) {},
+      (right) {
+        emit(
+          WeatherCityDataSuccess(
+            currentConditions: currentState.currentConditions,
+            fiveDaysForecast: currentState.fiveDaysForecast,
+            isAddedToFavorites: true,
+          ),
+        );
+      },
+    );
+  }
+
+  void onBackButtonPressed() => emit(WeatherInitial());
 }

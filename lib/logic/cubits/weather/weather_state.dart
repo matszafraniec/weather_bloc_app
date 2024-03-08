@@ -52,12 +52,18 @@ final class WeatherCityDataError extends WeatherCityData {
 final class WeatherCityDataSuccess extends WeatherCityData {
   final WeatherCurrentConditions currentConditions;
   final List<WeatherForecast>? fiveDaysForecast;
+  final bool isAddedToFavorites;
 
   const WeatherCityDataSuccess({
     required this.currentConditions,
     this.fiveDaysForecast,
+    this.isAddedToFavorites = false,
   });
 
   @override
-  List<Object> get props => [currentConditions, fiveDaysForecast ?? []];
+  List<Object> get props => [
+        currentConditions,
+        fiveDaysForecast ?? [],
+        isAddedToFavorites,
+      ];
 }

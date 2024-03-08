@@ -16,9 +16,7 @@ import '../models/weather_current_conditions/remote/weather_current_conditions_r
 
 abstract class WeatherRepository {
   Future<Either<GeneralError, List<LocationAutocomplete>>>
-      cityAutocompleteSearch(
-    String phrase,
-  );
+      cityAutocompleteSearch(String phrase);
 
   Future<Either<GeneralError, WeatherCurrentConditions>> fetchCurrentConditions(
     String locationKey,

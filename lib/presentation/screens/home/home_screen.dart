@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
 import 'package:weather_bloc_app/presentation/common/ui/empty_app_bar.dart';
 
 import '../../../logic/cubits/weather/weather_cubit.dart';
@@ -52,15 +53,29 @@ class HomeScreen extends StatelessWidget {
       _snackbarError(context, state.error.message);
     } else if (state is WeatherCityDataError) {
       _snackbarError(context, state.error.message);
+    } else if (state is WeatherCityDataSuccess) {
+      if (state.isAddedToFavorites) {
+        _snackbarSuccess(context);
+      }
     }
   }
 
   void _snackbarError(BuildContext context, String message) =>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          backgroundColor: context.themeColors.error,
           content: Text(message),
         ),
       );
+
+  void _snackbarSuccess(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.blue,
+        content: Text('Added to favorites'),
+      ),
+    );
+  }
 }
 
 class CustomBackButton extends StatelessWidget {
