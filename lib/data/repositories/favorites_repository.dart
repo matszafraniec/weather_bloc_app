@@ -6,6 +6,7 @@ import '../models/general_error/domain/general_error.dart';
 
 abstract class FavoritesRepository {
   Future<Either<GeneralError, void>> add(LocationInfo item);
+  Future<Either<GeneralError, void>> delete(LocationInfo item);
   Future<Either<GeneralError, List<LocationInfo>>> fetchAll();
 }
 
@@ -17,6 +18,11 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
   @override
   Future<Either<GeneralError, void>> add(LocationInfo item) async {
     return _service.add(item);
+  }
+
+  @override
+  Future<Either<GeneralError, void>> delete(LocationInfo item) async {
+    return _service.delete(item.key);
   }
 
   @override

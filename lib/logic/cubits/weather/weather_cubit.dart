@@ -20,7 +20,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     required FavoritesRepository favoritesRepo,
   })  : _weatherRepo = weatherRepo,
         _favoritesRepo = favoritesRepo,
-        super(WeatherInitial());
+        super(const WeatherInitial());
 
   Future<void> onSearchSubmitted(String searchPhrase) async {
     emit(WeatherCitySearchStart(searchPhrase));
@@ -28,12 +28,8 @@ class WeatherCubit extends Cubit<WeatherState> {
     final response = await _weatherRepo.cityAutocompleteSearch(searchPhrase);
 
     response.fold(
-      (error) {
-        emit(WeatherCitySearchError(error));
-      },
-      (data) {
-        emit(WeatherCitySearchSuccess(data));
-      },
+      (error) => emit(WeatherCitySearchError(error)),
+      (locations) => emit(WeatherCitySearchSuccess(locations)),
     );
   }
 
@@ -44,9 +40,7 @@ class WeatherCubit extends Cubit<WeatherState> {
         await _weatherRepo.fetchCurrentConditions(location.key);
 
     currentConditionsResponse.fold(
-      (error) {
-        emit(WeatherCityDataError(error));
-      },
+      (error) => emit(WeatherCityDataError(error)),
       (currentConditionsData) async {
         final currentConditionsObject = currentConditionsData
           ..locationInfo = LocationInfo(
@@ -66,9 +60,7 @@ class WeatherCubit extends Cubit<WeatherState> {
             await _weatherRepo.fetchFiveDaysForecast(location.key);
 
         forecastResponse.fold(
-          (error) {
-            emit(WeatherCityDataError(error));
-          },
+          (error) => emit(WeatherCityDataError(error)),
           (forecastData) {
             emit(
               WeatherCityDataSuccess(
@@ -102,5 +94,5 @@ class WeatherCubit extends Cubit<WeatherState> {
     );
   }
 
-  void onBackButtonPressed() => emit(WeatherInitial());
+  void onBackButtonPressed() => emit(const WeatherInitial());
 }

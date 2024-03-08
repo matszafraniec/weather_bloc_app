@@ -3,6 +3,7 @@ import 'package:weather_bloc_app/data/data_providers/favorites_service/favorites
 import 'package:weather_bloc_app/data/data_providers/history_service/history_service.dart';
 import 'package:weather_bloc_app/data/data_sources/local/local_database_source.dart';
 import 'package:weather_bloc_app/data/repositories/favorites_repository.dart';
+import 'package:weather_bloc_app/logic/cubits/favorite/favorite_cubit.dart';
 import 'package:weather_bloc_app/presentation/common/routing/app_navigator.dart';
 
 import 'data/repositories/weather_repository.dart';
@@ -19,6 +20,12 @@ void setupServiceLocator() {
       favoritesRepo: locator(),
     ),
   );
+  locator.registerFactory(
+    () => FavoriteCubit(
+      favoritesRepo: locator(),
+    ),
+  );
+
   locator
       .registerLazySingleton<WeatherRepository>(() => WeatherRepositoryImpl());
   locator.registerLazySingleton<FavoritesRepository>(
