@@ -18,7 +18,8 @@ class WeatherCurrentConditions {
   });
 
   factory WeatherCurrentConditions.fromRemote(
-          WeatherCurrentConditionsRemote remote) =>
+    WeatherCurrentConditionsRemote remote,
+  ) =>
       WeatherCurrentConditions(
         icon: remote.icon,
         regularTemperature: remote.temperature.metric.value,

@@ -11,7 +11,7 @@ import '../../models/weather_current_conditions/domain/location_info.dart';
 abstract class FavoritesService {
   Future<Either<GeneralError, void>> add(LocationInfo item);
   Future<Either<GeneralError, void>> delete(String key);
-  Future<Either<GeneralError, List<LocationInfoCache>>> fetchAll();
+  Stream<List<LocationInfoCache>> queryAllListener();
 }
 
 class FavoritesServiceImpl extends FavoritesService {
@@ -39,18 +39,7 @@ class FavoritesServiceImpl extends FavoritesService {
   }
 
   @override
-  Future<Either<GeneralError, List<LocationInfoCache>>> fetchAll() async {
-    try {
-      final response = await _db.fetchAll<LocationInfoCache>();
-
-      return response.fold(
-        (error) => left(GeneralError.unexpected()),
-        (data) => right(
-          data.map((e) => LocationInfoCache.fromMap(e)).toList(),
-        ),
-      );
-    } catch (ex) {
-      return left(GeneralError.unexpected());
-    }
-  }
+  Stream<List<LocationInfoCache>> queryAllListener() => _db
+      .queryAllListener<LocationInfoCache>()
+      .map((data) => data.map(LocationInfoCache.fromMap).toList());
 }

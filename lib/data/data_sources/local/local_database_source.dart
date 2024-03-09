@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
@@ -6,7 +7,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/location_info_cache.dart';
-import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/weather_current_conditions_cache.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/weather_conditions_history_cache.dart';
 
 import '../../common/statics.dart';
 
@@ -16,6 +17,7 @@ abstract class LocalDatabaseSource {
   Future<Either<GeneralError, void>> add<T>(Map<String, dynamic> rawData);
   Future<Either<GeneralError, void>> delete<T>(String key);
   Future<Either<GeneralError, List<Map<String, dynamic>>>> fetchAll<T>();
+  Stream<List<Map<String, Object?>>> queryAllListener<T>();
 }
 
 class LocalDatabaseSourceImpl extends LocalDatabaseSource {
@@ -60,7 +62,7 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
   Future<Either<GeneralError, void>> delete<T>(String key) async {
     try {
       log(
-        'Removing item ($T) to local database',
+        'Removing item ($T) from local database',
         name: Statics.loggerLocalDbName,
       );
 
@@ -99,10 +101,26 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
     }
   }
 
+  @override
+  Stream<List<Map<String, Object?>>> queryAllListener<T>() {
+    log(
+      'Query all listener set ($T)',
+      name: Statics.loggerLocalDbName,
+    );
+
+    return _collectionRef<T>().query().onSnapshots(_db).map(
+          (event) => event
+              .map(
+                (e) => e.value,
+              )
+              .toList(),
+        );
+  }
+
   StoreRef<int, Map<String, Object?>> _collectionRef<T>() {
     final map = {
       LocationInfoCache: _favoritesCollection,
-      WeatherCurrentConditionsCache: _historyCollection,
+      WeatherConditionsHistoryCache: _historyCollection,
     };
 
     return map[T]!;

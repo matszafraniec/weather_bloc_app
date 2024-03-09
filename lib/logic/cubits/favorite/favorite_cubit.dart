@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
@@ -9,23 +11,21 @@ part 'favorite_state.dart';
 
 class FavoriteCubit extends Cubit<FavoriteState> {
   final FavoritesRepository _favoritesRepo;
+  late StreamSubscription _querySubscription;
 
   FavoriteCubit({
     required FavoritesRepository favoritesRepo,
   })  : _favoritesRepo = favoritesRepo,
         super(const FavoriteInitial()) {
-    _loadData();
+    _dataListenAndPump();
   }
 
-  void _loadData() async {
+  void _dataListenAndPump() async {
     emit(FavoriteDataLoading());
 
-    final response = await _favoritesRepo.fetchAll();
-
-    response.fold(
-      (error) => emit(FavoriteDataError(error)),
-      (favorites) => emit(FavoriteDataSuccess(favorites)),
-    );
+    _querySubscription = _favoritesRepo.queryAllListener().listen(
+          (data) => emit(FavoriteDataSuccess(data)),
+        );
   }
 
   Future<void> onFavoriteDelete(LocationInfo item) async {
@@ -33,7 +33,13 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
     response.fold(
       (error) => emit(FavoriteDataError(error)),
-      (_) => _loadData(),
+      (_) {},
     );
+  }
+
+  @override
+  Future<void> close() async {
+    await _querySubscription.cancel();
+    return super.close();
   }
 }

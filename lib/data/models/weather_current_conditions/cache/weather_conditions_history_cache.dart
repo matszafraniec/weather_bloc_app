@@ -1,6 +1,7 @@
+import 'package:sembast/timestamp.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/location_info_cache.dart';
 
-class WeatherCurrentConditionsCache {
+class WeatherConditionsHistoryCache {
   final int id;
   final int icon;
   final double regularTemperature;
@@ -8,9 +9,9 @@ class WeatherCurrentConditionsCache {
   final double windSpeed;
   final String uvIndexText;
   final LocationInfoCache locationInfo;
-  final DateTime lastSeenAt;
+  final Timestamp lastSeenAt;
 
-  WeatherCurrentConditionsCache({
+  WeatherConditionsHistoryCache({
     required this.id,
     required this.icon,
     required this.regularTemperature,
@@ -21,8 +22,21 @@ class WeatherCurrentConditionsCache {
     required this.lastSeenAt,
   });
 
-  factory WeatherCurrentConditionsCache.fromMap(Map<String, dynamic> map) =>
-      WeatherCurrentConditionsCache(
+  // factory WeatherConditionsHistoryCache.fromCurrentConditionsDomain(
+  //         WeatherCurrentConditions domain) =>
+  //     WeatherConditionsHistoryCache(
+  //       id: domain.,
+  //       icon: domain.icon,
+  //       regularTemperature: domain.regularTemperature,
+  //       realFeelTemperature: domain.realFeelTemperature,
+  //       windSpeed: domain.windSpeed,
+  //       uvIndexText:domain.uvIndexText,
+  //       locationInfo: LocationInfoCache.fromDomain(domain.locationInfo),
+  //       lastSeenAt: map['lastSeenAt'] as Timestamp,
+  //     );
+
+  factory WeatherConditionsHistoryCache.fromMap(Map<String, dynamic> map) =>
+      WeatherConditionsHistoryCache(
         id: map['id'] as int,
         icon: map['icon'] as int,
         regularTemperature: map['regularTemperature'] as double,
@@ -32,7 +46,7 @@ class WeatherCurrentConditionsCache {
         locationInfo: LocationInfoCache.fromMap(
           map['locationInfo'],
         ),
-        lastSeenAt: map['lastSeenAt'] as DateTime,
+        lastSeenAt: map['lastSeenAt'] as Timestamp,
       );
 
   Map<String, dynamic> toMap() => {

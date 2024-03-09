@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
-import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/weather_current_conditions_cache.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/weather_conditions_history_cache.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_conditions_history.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
 
+import '../../common/statics.dart';
 import '../../data_sources/local/local_database_source.dart';
 
 abstract class HistoryService {
-  Future<Either<GeneralError, void>> add(WeatherCurrentConditionsCache item);
-  Future<Either<GeneralError, List<WeatherCurrentConditionsCache>>> fetchAll();
+  Future<Either<GeneralError, void>> add(WeatherCurrentConditions item);
+  Stream<List<WeatherConditionsHistoryCache>> queryAllListener();
 }
 
 class HistoryServiceImpl extends HistoryService {
@@ -15,25 +20,22 @@ class HistoryServiceImpl extends HistoryService {
   HistoryServiceImpl(this._db);
 
   @override
-  Future<Either<GeneralError, void>> add(
-      WeatherCurrentConditionsCache item) async {
-    return _db.add<WeatherCurrentConditionsCache>(item.toMap());
+  Future<Either<GeneralError, void>> add(WeatherCurrentConditions item) async {
+    try {
+      final domainModel = WeatherConditionsHistory.fromCurrentConditions(item);
+      final dbModel = domainModel.toDbModel();
+
+      return _db.add<WeatherConditionsHistoryCache>(dbModel.toMap());
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerFavServiceName, stackTrace: stackTrace);
+
+      return Left(GeneralError.unexpected());
+    }
   }
 
   @override
-  Future<Either<GeneralError, List<WeatherCurrentConditionsCache>>>
-      fetchAll() async {
-    try {
-      final response = await _db.fetchAll<WeatherCurrentConditionsCache>();
-
-      return response.fold(
-        (error) => left(GeneralError.unexpected()),
-        (data) => right(
-          data.map((e) => WeatherCurrentConditionsCache.fromMap(e)).toList(),
-        ),
-      );
-    } catch (ex) {
-      return left(GeneralError.unexpected());
-    }
-  }
+  Stream<List<WeatherConditionsHistoryCache>> queryAllListener() => _db
+      .queryAllListener<WeatherConditionsHistoryCache>()
+      .map((data) => data.map(WeatherConditionsHistoryCache.fromMap).toList());
 }

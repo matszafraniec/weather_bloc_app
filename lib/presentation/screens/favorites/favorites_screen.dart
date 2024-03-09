@@ -4,7 +4,7 @@ import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
 
 import '../../../logic/cubits/favorite/favorite_cubit.dart';
 import '../../common/ui/empty_app_bar.dart';
-import 'widgets/favorites_list.dart';
+import 'widgets/favorites_list_builder.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});

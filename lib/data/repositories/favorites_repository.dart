@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 
@@ -7,7 +9,7 @@ import '../models/general_error/domain/general_error.dart';
 abstract class FavoritesRepository {
   Future<Either<GeneralError, void>> add(LocationInfo item);
   Future<Either<GeneralError, void>> delete(LocationInfo item);
-  Future<Either<GeneralError, List<LocationInfo>>> fetchAll();
+  Stream<List<LocationInfo>> queryAllListener();
 }
 
 class FavoritesRepositoryImpl extends FavoritesRepository {
@@ -26,16 +28,7 @@ class FavoritesRepositoryImpl extends FavoritesRepository {
   }
 
   @override
-  Future<Either<GeneralError, List<LocationInfo>>> fetchAll() async {
-    final response = await _service.fetchAll();
-
-    return response.fold(
-      (error) => left(GeneralError.unexpected()),
-      (favorites) {
-        return right(
-          favorites.map((e) => LocationInfo.fromDbModel(e)).toList(),
-        );
-      },
-    );
-  }
+  Stream<List<LocationInfo>> queryAllListener() => _service
+      .queryAllListener()
+      .map((data) => data.map(LocationInfo.fromDbModel).toList());
 }

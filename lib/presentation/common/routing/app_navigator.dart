@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:weather_bloc_app/logic/cubits/favorite/favorite_cubit.dart';
+import 'package:weather_bloc_app/logic/cubits/history/history_cubit.dart';
 import 'package:weather_bloc_app/logic/cubits/weather/weather_cubit.dart';
 import 'package:weather_bloc_app/presentation/common/routing/routes.dart';
 import 'package:weather_bloc_app/presentation/screens/favorites/favorites_screen.dart';
@@ -50,7 +51,10 @@ class AppNavigator {
             routes: [
               GoRoute(
                 path: Routes.history,
-                builder: (context, state) => const HistoryScreen(),
+                builder: (context, state) => BlocProvider<HistoryCubit>(
+                  create: (context) => locator.get<HistoryCubit>(),
+                  child: const HistoryScreen(),
+                ),
               ),
             ],
           )

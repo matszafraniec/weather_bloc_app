@@ -17,6 +17,9 @@ final class FavoriteDataSuccess extends FavoriteState {
   final List<LocationInfo> favorites;
 
   const FavoriteDataSuccess(this.favorites);
+
+  @override
+  List<Object> get props => [favorites];
 }
 
 final class FavoriteDataError extends FavoriteState {

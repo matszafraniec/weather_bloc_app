@@ -5,6 +5,7 @@ import 'package:weather_bloc_app/data/models/location_autocomplete/domain/locati
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
 import 'package:weather_bloc_app/data/models/weather_forecast/domain/weather_forecast.dart';
+import 'package:weather_bloc_app/data/repositories/history_repository.dart';
 import 'package:weather_bloc_app/data/repositories/weather_repository.dart';
 
 import '../../../data/repositories/favorites_repository.dart';
@@ -14,12 +15,15 @@ part 'weather_state.dart';
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherRepository _weatherRepo;
   final FavoritesRepository _favoritesRepo;
+  final HistoryRepository _historyRepo;
 
   WeatherCubit({
     required WeatherRepository weatherRepo,
     required FavoritesRepository favoritesRepo,
+    required HistoryRepository historyRepo,
   })  : _weatherRepo = weatherRepo,
         _favoritesRepo = favoritesRepo,
+        _historyRepo = historyRepo,
         super(const WeatherInitial());
 
   Future<void> onSearchSubmitted(String searchPhrase) async {
@@ -55,6 +59,8 @@ class WeatherCubit extends Cubit<WeatherState> {
             currentConditions: currentConditionsObject,
           ),
         );
+
+        await _historyRepo.add(currentConditionsData);
 
         final forecastResponse =
             await _weatherRepo.fetchFiveDaysForecast(location.key);

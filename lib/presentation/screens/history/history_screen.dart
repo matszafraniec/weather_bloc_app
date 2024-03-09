@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weather_bloc_app/logic/cubits/favorite/favorite_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_bloc_app/logic/cubits/history/history_cubit.dart';
+import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
 
-import '../../../service_locator.dart';
 import '../../common/ui/empty_app_bar.dart';
+import 'widgets/history_list_builder.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -11,21 +13,19 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const EmptyAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('This is History tab'),
-            ElevatedButton(
-              child: const Text('Remove Favorite Cubit'),
-              onPressed: () {
-                final favoriteCubitInstance = locator.get<FavoriteCubit>();
-
-                favoriteCubitInstance.close();
-              },
-            ),
-          ],
-        ),
+      body: BlocBuilder<HistoryCubit, HistoryState>(
+        builder: (context, state) {
+          if (state is HistoryInitial || state is HistoryDataLoading) {
+            return const CircularProgressIndicator();
+          } else if (state is HistoryDataSuccess) {
+            return const HistoryListBuilder();
+          } else {
+            return Icon(
+              Icons.error,
+              color: context.themeColors.error,
+            );
+          }
+        },
       ),
     );
   }

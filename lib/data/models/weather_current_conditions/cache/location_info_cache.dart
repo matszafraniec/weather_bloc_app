@@ -1,3 +1,5 @@
+import '../domain/location_info.dart';
+
 class LocationInfoCache {
   final String key;
   final String city;
@@ -10,6 +12,14 @@ class LocationInfoCache {
     required this.area,
     required this.country,
   });
+
+  factory LocationInfoCache.fromDomain(LocationInfo domain) =>
+      LocationInfoCache(
+        key: domain.key,
+        city: domain.city,
+        area: domain.area,
+        country: domain.country,
+      );
 
   factory LocationInfoCache.fromMap(Map<String, dynamic> map) =>
       LocationInfoCache(
