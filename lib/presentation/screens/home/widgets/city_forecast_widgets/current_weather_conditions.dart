@@ -12,21 +12,6 @@ class CurrentWeatherConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: mocked item
-
-    // final item = WeatherCurrentConditions(
-    //   icon: 3,
-    //   regularTemperature: 30,
-    //   realFeelTemperature: 33,
-    //   windSpeed: 15.5,
-    //   uvIndexText: 'Moderate',
-    // )..locationInfo = LocationInfo(
-    //     key: '1234',
-    //     city: 'Warsaw',
-    //     area: 'Mazowieckie',
-    //     country: 'Poland',
-    //   );
-
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0, end: 1),
       duration: const Duration(milliseconds: 600),

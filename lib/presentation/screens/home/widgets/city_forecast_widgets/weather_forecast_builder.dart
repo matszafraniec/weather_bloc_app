@@ -49,36 +49,6 @@ class WeatherForecastList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: mocked items
-
-    // final items = [
-    //   WeatherForecast(
-    //     icon: 3,
-    //     temperature: 20.1,
-    //     windSpeed: 130,
-    //   ),
-    //   WeatherForecast(
-    //     icon: 2,
-    //     temperature: 25.1,
-    //     windSpeed: 85,
-    //   ),
-    //   WeatherForecast(
-    //     icon: 10,
-    //     temperature: 13.1,
-    //     windSpeed: 80,
-    //   ),
-    //   WeatherForecast(
-    //     icon: 3,
-    //     temperature: 14.1,
-    //     windSpeed: 15,
-    //   ),
-    //   WeatherForecast(
-    //     icon: 1,
-    //     temperature: 15.1,
-    //     windSpeed: 13,
-    //   ),
-    // ];
-
     return Padding(
       padding: const EdgeInsetsDirectional.only(
         top: Dimensions.paddingXM,

@@ -15,6 +15,7 @@ abstract class FavoritesRepository {
 }
 
 @prodEnv
+@mockEnv
 @LazySingleton(as: FavoritesRepository)
 class FavoritesRepositoryImpl extends FavoritesRepository {
   final FavoritesService _service;
