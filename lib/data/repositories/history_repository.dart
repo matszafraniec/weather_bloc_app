@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 import 'package:weather_bloc_app/data/data_providers/history_service/history_service.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_conditions_history.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
 
+import '../common/environment.dart';
 import '../models/general_error/domain/general_error.dart';
 
 abstract class HistoryRepository {
@@ -12,6 +14,9 @@ abstract class HistoryRepository {
   Stream<List<WeatherConditionsHistory>> queryAllListener();
 }
 
+@mockEnv
+@prodEnv
+@LazySingleton(as: HistoryRepository)
 class HistoryRepositoryImpl extends HistoryRepository {
   final HistoryService _service;
 

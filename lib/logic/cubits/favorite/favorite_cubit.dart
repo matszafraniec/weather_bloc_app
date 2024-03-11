@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 
 import '../../../data/models/general_error/domain/general_error.dart';
@@ -9,6 +10,7 @@ import '../../../data/repositories/favorites_repository.dart';
 
 part 'favorite_state.dart';
 
+@injectable
 class FavoriteCubit extends Cubit<FavoriteState> {
   final FavoritesRepository _favoritesRepo;
   late StreamSubscription _querySubscription;

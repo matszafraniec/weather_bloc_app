@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+import 'package:weather_bloc_app/data/common/environment.dart';
 import 'package:weather_bloc_app/data/common/statics.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 
@@ -14,6 +16,9 @@ abstract class FavoritesService {
   Stream<List<LocationInfoCache>> queryAllListener();
 }
 
+@mockEnv
+@prodEnv
+@LazySingleton(as: FavoritesService)
 class FavoritesServiceImpl extends FavoritesService {
   final LocalDatabaseSource _db;
 

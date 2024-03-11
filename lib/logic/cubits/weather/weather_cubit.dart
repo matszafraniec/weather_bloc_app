@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/location_autocomplete/domain/location_autocomplete.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
@@ -12,6 +13,7 @@ import '../../../data/repositories/favorites_repository.dart';
 
 part 'weather_state.dart';
 
+@injectable
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherRepository _weatherRepo;
   final FavoritesRepository _favoritesRepo;

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+import 'package:weather_bloc_app/data/common/environment.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 
 import '../data_providers/favorites_service/favorites_service.dart';
@@ -12,6 +14,8 @@ abstract class FavoritesRepository {
   Stream<List<LocationInfo>> queryAllListener();
 }
 
+@prodEnv
+@LazySingleton(as: FavoritesRepository)
 class FavoritesRepositoryImpl extends FavoritesRepository {
   final FavoritesService _service;
 

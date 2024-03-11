@@ -9,7 +9,7 @@ import 'package:weather_bloc_app/presentation/screens/favorites/favorites_screen
 import 'package:weather_bloc_app/presentation/screens/history/history_screen.dart';
 import 'package:weather_bloc_app/presentation/screens/home/home_screen.dart';
 
-import '../../../service_locator.dart';
+import '../../../injection.dart';
 import '../../screens/home/scaffold_with_navbar.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();

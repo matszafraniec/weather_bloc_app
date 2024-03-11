@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+import 'package:weather_bloc_app/data/common/environment.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/weather_conditions_history_cache.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_conditions_history.dart';
@@ -14,6 +16,9 @@ abstract class HistoryService {
   Stream<List<WeatherConditionsHistoryCache>> queryAllListener();
 }
 
+@mockEnv
+@prodEnv
+@LazySingleton(as: HistoryService)
 class HistoryServiceImpl extends HistoryService {
   final LocalDatabaseSource _db;
 

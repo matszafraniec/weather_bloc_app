@@ -1,8 +1,7 @@
-// Load data from data provider and convert to domain model. To be received from BLoC.
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:weather_bloc_app/data/common/environment.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
@@ -29,6 +28,8 @@ abstract class WeatherRepository {
   // geoposition search when tap on location button
 }
 
+@prodEnv
+@LazySingleton(as: WeatherRepository)
 class WeatherRepositoryImpl extends WeatherRepository {
   final _dio = Dio();
 
@@ -57,7 +58,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
       final response = await _dio.get(
         'http://dataservice.accuweather.com/locations/v1/cities/autocomplete',
         queryParameters: {
-          'apikey': Environment.weatherApiKey,
+          'apikey': EnvironmentConfig.weatherApiKey,
           'q': phrase.replaceAll(' ', '')
         },
       );
@@ -86,7 +87,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
       final response = await _dio.get(
         'http://dataservice.accuweather.com/currentconditions/v1/$locationKey',
         queryParameters: {
-          'apikey': Environment.weatherApiKey,
+          'apikey': EnvironmentConfig.weatherApiKey,
           'details': true,
         },
       );
@@ -116,7 +117,7 @@ class WeatherRepositoryImpl extends WeatherRepository {
       final response = await _dio.get(
         'http://dataservice.accuweather.com/forecasts/v1/daily/5day/$locationKey',
         queryParameters: {
-          'apikey': Environment.weatherApiKey,
+          'apikey': EnvironmentConfig.weatherApiKey,
           'details': true,
           'metric': true,
         },
