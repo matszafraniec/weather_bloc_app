@@ -1,4 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:sembast/timestamp.dart';
+import 'package:weather_bloc_app/data/common/extensions.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/location_info_cache.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/cache/weather_conditions_history_cache.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
@@ -14,6 +16,20 @@ class WeatherConditionsHistory {
     required this.lastSeenAt,
     required this.conditions,
   });
+
+  String get lastSeenAtFormatted {
+    if (lastSeenAt.isToday) {
+      return 'Today, ${DateFormat('HH:mm').format(lastSeenAt)}';
+    } else if (lastSeenAt.isYesterday) {
+      return 'Yesterday, ${DateFormat('HH:mm').format(lastSeenAt)}';
+    }
+
+    if (DateTime.now().year != lastSeenAt.year) {
+      return DateFormat('dd.MM.yyyy, HH:mm').format(lastSeenAt);
+    }
+
+    return DateFormat('dd.MM, HH:mm').format(lastSeenAt);
+  }
 
   factory WeatherConditionsHistory.fromCurrentConditions(
     WeatherCurrentConditions currentConditions,

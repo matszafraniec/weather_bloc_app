@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_bloc_app/logic/cubits/history/history_cubit.dart';
-import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
+import 'package:weather_bloc_app/presentation/common/ui/no_items_text.dart';
+import 'package:weather_bloc_app/presentation/screens/history/widgets/history_item.dart';
 
 import '../../../common/dimensions.dart';
 
@@ -14,7 +15,7 @@ class HistoryListBuilder extends StatelessWidget {
       builder: (context, state) {
         final items = (state as HistoryDataSuccess).historyItems;
 
-        if (items.isEmpty) return const Text('No history items');
+        if (items.isEmpty) return const NoItemsText('No history items');
 
         return const HistoryList();
       },
@@ -38,22 +39,7 @@ class HistoryList extends StatelessWidget {
           itemBuilder: (context, index) {
             final item = items[index];
 
-            return ListTile(
-              title: Text(
-                item.conditions.locationInfo.city,
-                style: context.themeTexts.headlineMedium,
-              ),
-              subtitle: Column(
-                children: [
-                  Text(item.conditions.regularTemperature.toString()),
-                  Padding(
-                    padding: const EdgeInsets.only(top: Dimensions.paddingS),
-                    child: Text(item.conditions.uvIndexText),
-                  ),
-                ],
-              ),
-              trailing: Text(item.lastSeenAt.toString()),
-            );
+            return HistoryItem(item);
           },
         );
       },

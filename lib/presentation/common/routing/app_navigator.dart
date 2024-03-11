@@ -1,16 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_bloc_app/logic/cubits/favorite/favorite_cubit.dart';
-import 'package:weather_bloc_app/logic/cubits/history/history_cubit.dart';
-import 'package:weather_bloc_app/logic/cubits/weather/weather_cubit.dart';
-import 'package:weather_bloc_app/presentation/common/routing/routes.dart';
-import 'package:weather_bloc_app/presentation/screens/favorites/favorites_screen.dart';
-import 'package:weather_bloc_app/presentation/screens/history/history_screen.dart';
-import 'package:weather_bloc_app/presentation/screens/home/home_screen.dart';
 
-import '../../../injection.dart';
+import '../../../injection/injection.dart';
+import '../../../logic/cubits/favorite/favorite_cubit.dart';
+import '../../../logic/cubits/history/history_cubit.dart';
+import '../../../logic/cubits/weather/weather_cubit.dart';
+import '../../screens/favorites/favorites_screen.dart';
+import '../../screens/history/history_screen.dart';
+import '../../screens/home/home_screen.dart';
 import '../../screens/home/scaffold_with_navbar.dart';
+import 'routes.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _sectionNavigatorKey = GlobalKey<NavigatorState>();

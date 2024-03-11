@@ -11,21 +11,21 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'data/data_providers/favorites_service/favorites_service.dart' as _i3;
-import 'data/data_providers/history_service/history_service.dart' as _i5;
-import 'data/data_providers/weather_service/local/weather_local_cache.dart'
+import '../data/data_providers/favorites_service/favorites_service.dart' as _i3;
+import '../data/data_providers/history_service/history_service.dart' as _i5;
+import '../data/data_providers/weather_service/local/weather_local_cache.dart'
     as _i6;
-import 'data/data_providers/weather_service/remote/weather_remote_service.dart'
+import '../data/data_providers/weather_service/remote/weather_remote_service.dart'
     as _i7;
-import 'data/data_providers/weather_service/weather_service.dart' as _i10;
-import 'data/data_sources/local/local_database_source.dart' as _i4;
-import 'data/repositories/favorites_repository.dart' as _i11;
-import 'data/repositories/history_repository.dart' as _i12;
-import 'data/repositories/mocks/mocked_weather_repository.dart' as _i9;
-import 'data/repositories/weather_repository.dart' as _i8;
-import 'logic/cubits/favorite/favorite_cubit.dart' as _i14;
-import 'logic/cubits/history/history_cubit.dart' as _i15;
-import 'logic/cubits/weather/weather_cubit.dart' as _i13;
+import '../data/data_providers/weather_service/weather_service.dart' as _i10;
+import '../data/data_sources/local/local_database_source.dart' as _i4;
+import '../data/repositories/favorites_repository.dart' as _i11;
+import '../data/repositories/history_repository.dart' as _i12;
+import '../data/repositories/mocks/mocked_weather_repository.dart' as _i9;
+import '../data/repositories/weather_repository.dart' as _i8;
+import '../logic/cubits/favorite/favorite_cubit.dart' as _i14;
+import '../logic/cubits/history/history_cubit.dart' as _i15;
+import '../logic/cubits/weather/weather_cubit.dart' as _i13;
 
 const String _mock = 'mock';
 const String _prod = 'prod';

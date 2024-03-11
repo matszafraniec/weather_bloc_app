@@ -17,18 +17,8 @@ class AppTheme {
     seedColor: Colors.deepPurple,
   );
 
-  static const darkScheme = ColorScheme(
-    primary: Colors.red,
-    onPrimary: Colors.redAccent,
-    secondary: Colors.black,
-    onSecondary: Colors.black12,
-    error: Colors.blue,
-    onError: Colors.blueAccent,
-    background: Colors.black12,
-    onBackground: Colors.black38,
-    surface: Colors.green,
-    onSurface: Colors.greenAccent,
-    brightness: Brightness.dark,
+  static final darkScheme = ColorScheme.fromSeed(
+    seedColor: Colors.deepPurple,
   );
 
   static const Color colorLightBackground = Colors.white;

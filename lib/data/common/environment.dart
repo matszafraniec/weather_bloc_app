@@ -8,8 +8,8 @@ const mockEnv = Environment('mock');
 class EnvironmentConfig {
   static const weatherApiKey = String.fromEnvironment('WEATHER_API_KEY');
 
-  static Environment resolveEnvironmentType() {
-    if (EnvironmentConfig.weatherApiKey.isEmpty) {
+  static Environment get type {
+    if (weatherApiKey.isEmpty) {
       log('Connected to ${mockEnv.name}', name: 'Environment');
 
       return mockEnv;

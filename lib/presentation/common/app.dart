@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_bloc_app/presentation/common/app_theme.dart';
 
-import '../../injection.dart';
+import '../../injection/injection.dart';
+import 'app_theme.dart';
 import 'routing/app_navigator.dart';
 
 class App extends StatelessWidget {

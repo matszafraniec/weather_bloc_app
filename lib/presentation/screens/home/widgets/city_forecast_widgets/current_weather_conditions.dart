@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
+import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
 import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
 
 import '../../../../../logic/cubits/weather/weather_cubit.dart';
@@ -23,105 +25,158 @@ class CurrentWeatherConditions extends StatelessWidget {
             builder: (context, state) {
               final data = (state as WeatherCityDataSuccess).currentConditions;
 
-              return Material(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                  side: BorderSide(
-                    color: WeatherColorHelper.obtainColor(
-                      data.icon,
+              return CardWrapper(
+                borderColor: WeatherColorHelper.obtainColor(data.icon),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CityLocationInfo(data.locationInfo),
+                        WheaterIcon.big(value: data.icon),
+                      ],
                     ),
-                    width: 2,
-                  ),
-                ),
-                elevation: 8,
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                    start: Dimensions.paddingL,
-                    end: Dimensions.paddingL,
-                    top: Dimensions.paddingL,
-                    bottom: Dimensions.paddingS,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  data.locationInfo.city,
-                                  style: context.themeTexts.headlineMedium,
-                                ),
-                                Text(
-                                  data.locationInfo.area,
-                                ),
-                                Text(
-                                  data.locationInfo.country,
-                                ),
-                              ],
-                            ),
-                          ),
-                          WheaterIcon.big(value: data.icon),
-                        ],
-                      ),
-                      const Divider(
-                        height: Dimensions.paddingXXL,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Temperature: ${data.regularTemperature}°C',
-                                ),
-                                Text(
-                                  'Wind: ${data.windSpeed} km/h',
-                                ),
-                              ],
-                            ),
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    'Real Feel: ${data.realFeelTemperature}°C'),
-                                Text('UVIndex: ${data.uvIndexText}'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (!state.isAddedToFavorites)
-                        Align(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          child: IconButton(
-                            padding: const EdgeInsets.all(Dimensions.paddingS),
-                            constraints: const BoxConstraints(),
-                            icon: Icon(
-                              Icons.favorite,
-                              color: context.themeColors.error,
-                            ),
-                            onPressed: () async {
-                              await context
-                                  .read<WeatherCubit>()
-                                  .onAddToFavorites();
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
+                    const Divider(
+                      height: Dimensions.paddingXXL,
+                    ),
+                    CurrentConditionsInfo(data),
+                    const FavoriteIcon(),
+                  ],
                 ),
               );
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CityLocationInfo extends StatelessWidget {
+  final LocationInfo location;
+
+  const CityLocationInfo(this.location, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            location.city,
+            style: context.themeTexts.headlineMedium,
+          ),
+          Text(
+            location.area,
+          ),
+          Text(
+            location.country,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CurrentConditionsInfo extends StatelessWidget {
+  final WeatherCurrentConditions currentConditions;
+
+  const CurrentConditionsInfo(this.currentConditions, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Temperature: ${currentConditions.regularTemperature}°C',
+              ),
+              Text(
+                'Wind: ${currentConditions.windSpeed} km/h',
+              ),
+            ],
+          ),
+        ),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Real Feel: ${currentConditions.realFeelTemperature}°C'),
+              Text('UVIndex: ${currentConditions.uvIndexText}'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FavoriteIcon extends StatelessWidget {
+  const FavoriteIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WeatherCubit, WeatherState>(
+      builder: (context, state) {
+        state as WeatherCityDataSuccess;
+
+        return Align(
+          alignment: AlignmentDirectional.bottomEnd,
+          child: IconButton(
+            padding: const EdgeInsets.all(Dimensions.paddingS),
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              state.isAddedToFavorites
+                  ? Icons.favorite
+                  : Icons.favorite_outline,
+              color: context.themeColors.error,
+            ),
+            onPressed: state.isAddedToFavorites
+                ? null
+                : () async =>
+                    await context.read<WeatherCubit>().onAddToFavorites(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class CardWrapper extends StatelessWidget {
+  final Widget child;
+  final Color borderColor;
+
+  const CardWrapper({
+    required this.child,
+    required this.borderColor,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide(
+          color: borderColor,
+          width: 2,
+        ),
+      ),
+      elevation: 8,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.only(
+          start: Dimensions.paddingL,
+          end: Dimensions.paddingL,
+          top: Dimensions.paddingL,
+          bottom: Dimensions.paddingS,
+        ),
+        child: child,
       ),
     );
   }
