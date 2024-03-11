@@ -10,11 +10,11 @@ class EnvironmentConfig {
 
   static Environment resolveEnvironmentType() {
     if (EnvironmentConfig.weatherApiKey.isEmpty) {
-      log('Connected to mocked', name: 'Environment');
+      log('Connected to ${mockEnv.name}', name: 'Environment');
 
       return mockEnv;
     } else {
-      log('Connected to production', name: 'Environment');
+      log('Connected to ${prodEnv.name}', name: 'Environment');
 
       return prodEnv;
     }
