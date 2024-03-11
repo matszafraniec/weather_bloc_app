@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'weather_color_helper.dart';
+
 class WheaterIcon extends StatelessWidget {
   final int value;
   final bool _isBig;
@@ -28,18 +30,25 @@ class WheaterIcon extends StatelessWidget {
   }
 
   IconData _iconMapper(int value) {
-    if (value > 0 && value < 5) {
-      return Icons.sunny;
-    } else {
-      return Icons.cloud;
+    switch (value) {
+      case > 0 && <= 5:
+        return Icons.sunny;
+      case > 5 && <= 8:
+        return Icons.cloud;
+      case > 8 && <= 11:
+        return Icons.foggy;
+      case > 11 && <= 29:
+        return Icons.cloudy_snowing;
+      case 30:
+        return Icons.thermostat;
+      case 31:
+        return Icons.ac_unit;
+      case 32:
+        return Icons.air;
+      default:
+        return Icons.help;
     }
   }
 
-  Color _colorMapper(int value) {
-    if (value > 0 && value < 5) {
-      return Colors.orangeAccent;
-    } else {
-      return Colors.blue;
-    }
-  }
+  Color _colorMapper(int value) => WeatherColorHelper.obtainColor(value);
 }
