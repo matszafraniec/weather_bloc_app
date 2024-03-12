@@ -44,5 +44,5 @@ app.*.map.json
 /android/app/release
 
 # Build runner generated classes
-*.freezed.dart
-*.mocks.dart
+# *.freezed.dart
+# *.mocks.dart
