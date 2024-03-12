@@ -30,46 +30,87 @@ void main() {
       .thenAnswer((_) async => right(mockedWheaterData.weatherForecast));
   when(mockFavoritesRepo.add(any)).thenAnswer((_) async => right(null));
 
-  final cubit = WeatherCubit(
-    weatherRepo: mockWeatherRepo,
-    favoritesRepo: mockFavoritesRepo,
-    historyRepo: mockHistoryRepo,
-  );
+  group(
+    'WeatherCubit',
+    () {
+      test(
+        'Initial state is WeatherInitial()',
+        () {
+          final cubit = WeatherCubit(
+            weatherRepo: mockWeatherRepo,
+            favoritesRepo: mockFavoritesRepo,
+            historyRepo: mockHistoryRepo,
+          );
 
-  group('WeatherCubit', () {
-    test(
-      'Initial state is WeatherInitial()',
-      () {
-        expect(
-          cubit.state,
-          const WeatherInitial(),
-        );
-      },
-    );
-  });
+          expect(
+            cubit.state,
+            const WeatherInitial(),
+          );
+        },
+      );
 
-  blocTest(
-    'The cubit should emit WeatherCitySearchStart and WeatherCitySearchSuccess after onSearchSubmitted() is being called',
-    build: () => cubit,
-    act: (cubit) => cubit.onSearchSubmitted('searchPhrase'),
-    expect: () => [
-      const WeatherCitySearchStart('searchPhrase'),
-      WeatherCitySearchSuccess(mockedWheaterData.locations),
-    ],
-  );
+      blocTest(
+        'The cubit should emit WeatherCitySearchStart and WeatherCitySearchSuccess after onSearchSubmitted() is being called',
+        build: () => WeatherCubit(
+          weatherRepo: mockWeatherRepo,
+          favoritesRepo: mockFavoritesRepo,
+          historyRepo: mockHistoryRepo,
+        ),
+        act: (cubit) => cubit.onSearchSubmitted('searchPhrase'),
+        expect: () => [
+          const WeatherCitySearchStart('searchPhrase'),
+          WeatherCitySearchSuccess(mockedWheaterData.locations),
+        ],
+      );
 
-  blocTest(
-    'The cubit should emit WeatherCityDataLoading and twice WeatherCityDataSuccess after onLocationSelected() is being called',
-    build: () => cubit,
-    act: (cubit) => cubit.onLocationSelected(mockedWheaterData.locations.first),
-    expect: () => [
-      const WeatherCityDataLoading(),
-      isA<WeatherCityDataSuccess>()
-          .having((p0) => p0.currentConditions, "is not null", isNotNull)
-          .having((p0) => p0.fiveDaysForecast, "is null", isNull),
-      isA<WeatherCityDataSuccess>()
-          .having((p0) => p0.fiveDaysForecast, "is not null", isNotNull)
-          .having((p0) => p0.fiveDaysForecast!.length, "has 5 elements", 5)
-    ],
+      blocTest(
+        'The cubit should emit WeatherCityDataLoading and twice WeatherCityDataSuccess after onLocationSelected() is being called',
+        build: () => WeatherCubit(
+          weatherRepo: mockWeatherRepo,
+          favoritesRepo: mockFavoritesRepo,
+          historyRepo: mockHistoryRepo,
+        ),
+        act: (cubit) =>
+            cubit.onLocationSelected(mockedWheaterData.locations.first),
+        expect: () => [
+          const WeatherCityDataLoading(),
+          isA<WeatherCityDataSuccess>()
+              .having((p0) => p0.currentConditions, "is not null", isNotNull)
+              .having((p0) => p0.fiveDaysForecast, "is null", isNull),
+          isA<WeatherCityDataSuccess>()
+              .having((p0) => p0.fiveDaysForecast, "is not null", isNotNull)
+              .having((p0) => p0.fiveDaysForecast!.length, "has 5 elements", 5)
+        ],
+      );
+
+      blocTest(
+        'The cubit emits WeatherCityDataSuccess state with isAddedToFavorites set to true after  onAddToFavorites() is being called',
+        build: () => WeatherCubit(
+          weatherRepo: mockWeatherRepo,
+          favoritesRepo: mockFavoritesRepo,
+          historyRepo: mockHistoryRepo,
+        ),
+        act: (cubit) {
+          cubit.emit(
+            WeatherCityDataSuccess(
+              currentConditions: mockedWheaterData.currentWeatherConditions
+                ..locationInfo =
+                    mockedWheaterData.locations.first.toLocationInfo(),
+              fiveDaysForecast: mockedWheaterData.weatherForecast,
+              isAddedToFavorites: false,
+            ),
+          );
+
+          cubit.onAddToFavorites();
+        },
+        expect: () => [
+          isA<WeatherCityDataSuccess>(),
+          isA<WeatherCityDataSuccess>()
+              .having((p0) => p0.currentConditions, "is not null", isNotNull)
+              .having((p0) => p0.fiveDaysForecast, "is not null", isNotNull)
+              .having((p0) => p0.isAddedToFavorites, "is true", true),
+        ],
+      );
+    },
   );
 }
