@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:weather_bloc_app/data/models/location_autocomplete/domain/location_autocomplete.dart';
+import 'package:weather_bloc_app/logic/cubits/weather/weather_cubit.dart';
 import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
 
 import '../../../../data/models/weather_current_conditions/domain/location_info.dart';
 import '../../../../logic/cubits/favorite/favorite_cubit.dart';
 import '../../../common/dimensions.dart';
+import '../../../common/routing/routes.dart';
 
 class FavoriteItem extends StatelessWidget {
   final LocationInfo item;
@@ -18,7 +22,13 @@ class FavoriteItem extends StatelessWidget {
       child: Card(
         color: context.themeColors.onPrimary,
         child: InkWell(
-          onTap: () => context.read<FavoriteCubit>().onItemTap(item),
+          onTap: () async {
+            context.go(Routes.home);
+
+            await context.read<WeatherCubit>().onLocationSelected(
+                  LocationAutocomplete.fromLocationInfo(item),
+                );
+          },
           child: Padding(
             padding: const EdgeInsetsDirectional.only(
               start: Dimensions.paddingL,

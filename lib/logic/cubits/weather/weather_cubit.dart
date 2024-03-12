@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:weather_bloc_app/data/models/general_error/domain/general_error.dart';
 import 'package:weather_bloc_app/data/models/location_autocomplete/domain/location_autocomplete.dart';
-import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/weather_current_conditions.dart';
 import 'package:weather_bloc_app/data/models/weather_forecast/domain/weather_forecast.dart';
 import 'package:weather_bloc_app/data/repositories/history_repository.dart';
@@ -49,12 +48,7 @@ class WeatherCubit extends Cubit<WeatherState> {
       (error) => emit(WeatherCityDataError(error)),
       (currentConditionsData) async {
         final currentConditionsObject = currentConditionsData
-          ..locationInfo = LocationInfo(
-            key: location.key,
-            city: location.name,
-            area: location.area,
-            country: location.country,
-          );
+          ..locationInfo = location.toLocationInfo();
 
         emit(
           WeatherCityDataSuccess(

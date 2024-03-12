@@ -15,11 +15,18 @@ final class HistoryDataLoading extends HistoryState {}
 
 final class HistoryDataSuccess extends HistoryState {
   final List<WeatherConditionsHistory> historyItems;
+  final WeatherConditionsHistory? itemPreview;
 
-  const HistoryDataSuccess(this.historyItems);
+  const HistoryDataSuccess({
+    required this.historyItems,
+    this.itemPreview,
+  });
 
   @override
-  List<Object> get props => [historyItems];
+  List<Object> get props => [
+        historyItems,
+        itemPreview ?? Object(),
+      ];
 }
 
 final class HistoryDataError extends HistoryState {

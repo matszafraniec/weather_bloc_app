@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_bloc_app/data/models/weather_current_conditions/domain/location_info.dart';
+import 'package:weather_bloc_app/logic/cubits/history/history_cubit.dart';
 import 'package:weather_bloc_app/presentation/common/context_extensions.dart';
 
 import '../../../../data/models/weather_current_conditions/domain/weather_conditions_history.dart';
@@ -18,25 +20,28 @@ class HistoryItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingS),
       child: Card(
         color: context.themeColors.onPrimary,
-        child: Column(
-          children: [
-            LastSeenAtInfo(item.lastSeenAtFormatted),
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: Dimensions.paddingL,
-                end: Dimensions.paddingS,
-                bottom: Dimensions.paddingXM,
-                top: Dimensions.paddingS,
+        child: InkWell(
+          onTap: () => context.read<HistoryCubit>().onItemTap(item),
+          child: Column(
+            children: [
+              LastSeenAtInfo(item.lastSeenAtFormatted),
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: Dimensions.paddingL,
+                  end: Dimensions.paddingS,
+                  bottom: Dimensions.paddingXM,
+                  top: Dimensions.paddingS,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CityLocationInfo(item.conditions.locationInfo),
+                    WheaterConditionsInfo(item.conditions),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CityLocationInfo(item.conditions.locationInfo),
-                  WheaterConditionsInfo(item.conditions),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

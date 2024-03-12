@@ -33,7 +33,7 @@ class WheaterIcon extends StatelessWidget {
     switch (value) {
       case > 0 && <= 5:
         return Icons.sunny;
-      case > 5 && <= 8:
+      case > 5 && <= 8 || 38:
         return Icons.cloud;
       case > 8 && <= 11:
         return Icons.foggy;

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../injection/injection.dart';
 import '../../../logic/cubits/favorite/favorite_cubit.dart';
 import '../../../logic/cubits/history/history_cubit.dart';
-import '../../../logic/cubits/weather/weather_cubit.dart';
 import '../../screens/favorites/favorites_screen.dart';
 import '../../screens/history/history_screen.dart';
 import '../../screens/home/home_screen.dart';
@@ -16,7 +15,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _sectionNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppNavigator {
-  final GoRouter router = GoRouter(
+  final router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     routes: [
       StatefulShellRoute.indexedStack(
@@ -29,10 +28,7 @@ class AppNavigator {
             routes: [
               GoRoute(
                 path: Routes.home,
-                builder: (context, state) => BlocProvider<WeatherCubit>(
-                  create: (context) => locator.get<WeatherCubit>(),
-                  child: const HomeScreen(),
-                ),
+                builder: (context, state) => const HomeScreen(),
               ),
             ],
           ),

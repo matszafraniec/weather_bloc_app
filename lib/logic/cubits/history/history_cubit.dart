@@ -26,11 +26,26 @@ class HistoryCubit extends Cubit<HistoryState> {
     emit(HistoryDataLoading());
 
     _querySubscription = _historyRepo.queryAllListener().listen(
-          (data) => emit(HistoryDataSuccess(data)),
+          (items) => emit(HistoryDataSuccess(historyItems: items)),
         );
   }
 
-  void onItemTap() {}
+  void onItemTap(WeatherConditionsHistory item) {
+    emit(
+      HistoryDataSuccess(
+        historyItems: (state as HistoryDataSuccess).historyItems,
+        itemPreview: item,
+      ),
+    );
+  }
+
+  void onPreviewDismiss() {
+    emit(
+      HistoryDataSuccess(
+        historyItems: (state as HistoryDataSuccess).historyItems,
+      ),
+    );
+  }
 
   @override
   Future<void> close() async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_bloc_app/logic/cubits/weather/weather_cubit.dart';
+import 'package:weather_bloc_app/presentation/common/ui/no_items_text.dart';
 
 import '../../../../common/dimensions.dart';
 
@@ -12,6 +13,10 @@ class CitiesListBuilder extends StatelessWidget {
     return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, state) {
         if (state is WeatherCitySearchSuccess) {
+          if (state.autocompletes.isEmpty) {
+            return const NoItemsText('No results');
+          }
+
           return const CitiesList();
         }
 

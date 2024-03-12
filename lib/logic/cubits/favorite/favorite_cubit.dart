@@ -30,15 +30,6 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         );
   }
 
-  Future<void> onItemTap(LocationInfo item) async {
-    // final response = await _favoritesRepo.delete(item);
-
-    // response.fold(
-    //   (error) => emit(FavoriteDataError(error)),
-    //   (_) {},
-    // );
-  }
-
   Future<void> onItemDelete(LocationInfo item) async {
     final response = await _favoritesRepo.delete(item);
 

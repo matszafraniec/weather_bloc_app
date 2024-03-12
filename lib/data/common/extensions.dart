@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+
 extension DateUtils on DateTime {
   bool get isToday {
     final now = DateTime.now();
@@ -17,4 +19,11 @@ extension DateUtils on DateTime {
         yesterday.month == month &&
         yesterday.year == year;
   }
+}
+
+extension ConnectivityResultExtensions on ConnectivityResult {
+  bool get isDisconnected =>
+      this == ConnectivityResult.none || this == ConnectivityResult.bluetooth;
+
+  bool get isConnected => !isDisconnected;
 }
