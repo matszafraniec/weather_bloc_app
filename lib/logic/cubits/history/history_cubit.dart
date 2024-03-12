@@ -23,7 +23,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   void _dataListenAndPump() async {
-    emit(HistoryDataLoading());
+    emit(const HistoryDataLoading());
 
     _querySubscription = _historyRepo.queryAllListener().listen(
           (items) => emit(HistoryDataSuccess(historyItems: items)),

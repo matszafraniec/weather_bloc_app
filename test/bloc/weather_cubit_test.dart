@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -18,16 +20,16 @@ import 'weather_cubit_test.mocks.dart';
 
 void main() {
   final mockWeatherRepo = MockWeatherRepository();
-  final mockedWheaterData = MockedWeatherRepositoryData();
+  final mockedData = MockedWeatherRepositoryData();
   final mockFavoritesRepo = MockFavoritesRepository();
   final mockHistoryRepo = MockHistoryRepository();
 
   when(mockWeatherRepo.cityAutocompleteSearch(any))
-      .thenAnswer((_) async => right(mockedWheaterData.locations));
-  when(mockWeatherRepo.fetchCurrentConditions(any)).thenAnswer(
-      (_) async => right(mockedWheaterData.currentWeatherConditions));
+      .thenAnswer((_) async => right(mockedData.locations));
+  when(mockWeatherRepo.fetchCurrentConditions(any))
+      .thenAnswer((_) async => right(mockedData.currentWeatherConditions));
   when(mockWeatherRepo.fetchFiveDaysForecast(any))
-      .thenAnswer((_) async => right(mockedWheaterData.weatherForecast));
+      .thenAnswer((_) async => right(mockedData.weatherForecast));
   when(mockFavoritesRepo.add(any)).thenAnswer((_) async => right(null));
 
   group(
@@ -59,7 +61,7 @@ void main() {
         act: (cubit) => cubit.onSearchSubmitted('searchPhrase'),
         expect: () => [
           const WeatherCitySearchStart('searchPhrase'),
-          WeatherCitySearchSuccess(mockedWheaterData.locations),
+          WeatherCitySearchSuccess(mockedData.locations),
         ],
       );
 
@@ -70,8 +72,7 @@ void main() {
           favoritesRepo: mockFavoritesRepo,
           historyRepo: mockHistoryRepo,
         ),
-        act: (cubit) =>
-            cubit.onLocationSelected(mockedWheaterData.locations.first),
+        act: (cubit) => cubit.onLocationSelected(mockedData.locations.first),
         expect: () => [
           const WeatherCityDataLoading(),
           isA<WeatherCityDataSuccess>()
@@ -90,21 +91,14 @@ void main() {
           favoritesRepo: mockFavoritesRepo,
           historyRepo: mockHistoryRepo,
         ),
-        act: (cubit) {
-          cubit.emit(
-            WeatherCityDataSuccess(
-              currentConditions: mockedWheaterData.currentWeatherConditions
-                ..locationInfo =
-                    mockedWheaterData.locations.first.toLocationInfo(),
-              fiveDaysForecast: mockedWheaterData.weatherForecast,
-              isAddedToFavorites: false,
-            ),
-          );
-
-          cubit.onAddToFavorites();
-        },
+        seed: () => WeatherCityDataSuccess(
+          currentConditions: mockedData.currentWeatherConditions
+            ..locationInfo = mockedData.locations.first.toLocationInfo(),
+          fiveDaysForecast: mockedData.weatherForecast,
+          isAddedToFavorites: false,
+        ) as WeatherState,
+        act: (cubit) => cubit.onAddToFavorites(),
         expect: () => [
-          isA<WeatherCityDataSuccess>(),
           isA<WeatherCityDataSuccess>()
               .having((p0) => p0.currentConditions, "is not null", isNotNull)
               .having((p0) => p0.fiveDaysForecast, "is not null", isNotNull)

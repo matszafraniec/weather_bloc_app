@@ -11,7 +11,9 @@ final class FavoriteInitial extends FavoriteState {
   const FavoriteInitial();
 }
 
-final class FavoriteDataLoading extends FavoriteState {}
+final class FavoriteDataLoading extends FavoriteState {
+  const FavoriteDataLoading();
+}
 
 final class FavoriteDataSuccess extends FavoriteState {
   final List<LocationInfo> favorites;

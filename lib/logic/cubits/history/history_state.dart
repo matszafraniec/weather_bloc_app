@@ -11,7 +11,9 @@ final class HistoryInitial extends HistoryState {
   const HistoryInitial();
 }
 
-final class HistoryDataLoading extends HistoryState {}
+final class HistoryDataLoading extends HistoryState {
+  const HistoryDataLoading();
+}
 
 final class HistoryDataSuccess extends HistoryState {
   final List<WeatherConditionsHistory> historyItems;

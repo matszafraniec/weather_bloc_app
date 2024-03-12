@@ -23,7 +23,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   }
 
   void _dataListenAndPump() async {
-    emit(FavoriteDataLoading());
+    emit(const FavoriteDataLoading());
 
     _querySubscription = _favoritesRepo.queryAllListener().listen(
           (data) => emit(FavoriteDataSuccess(data)),
