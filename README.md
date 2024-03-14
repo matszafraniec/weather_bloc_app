@@ -4,7 +4,7 @@ A Flutter project representing the implementation of the BLoC pattern, using the
 
 Full stack: BLoC, GoRouter, GetIt, Injectable, Mockito, Sembast.
 
-![]((https://github.com/matszafraniec/weather_bloc_app/blob/main/demo.gif))
+<img src="/demo.gif" width="240" height="480"/>
 
 ## Getting Started
 
