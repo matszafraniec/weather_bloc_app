@@ -4,6 +4,8 @@ A Flutter project representing the implementation of the BLoC pattern, using the
 
 Full stack: BLoC, GoRouter, GetIt, Injectable, Mockito, Sembast.
 
+![](https://github.com/matszafraniec/weather_bloc_app/demo.gif)
+
 ## Getting Started
 
 App uses [AccuWeather API][1] to fetch weather conditions data.
